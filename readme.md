@@ -4,10 +4,13 @@
 쉬우면 다음 단계 풀기
 느낀점 서술하기
 
-해시 https://programmers.co.kr/learn/courses/30/lessons/42576
-DP https://programmers.co.kr/learn/courses/30/lessons/42895
-힙 https://programmers.co.kr/learn/courses/30/lessons/42626
-그래프 https://programmers.co.kr/learn/courses/30/lessons/49189
+1.해시 https://programmers.co.kr/learn/courses/30/lessons/42576
+
+2.DP https://programmers.co.kr/learn/courses/30/lessons/42895
+
+3.힙 https://programmers.co.kr/learn/courses/30/lessons/42626
+
+4.그래프 https://programmers.co.kr/learn/courses/30/lessons/49189
 
 
 -----------------------------------------------------------------------
