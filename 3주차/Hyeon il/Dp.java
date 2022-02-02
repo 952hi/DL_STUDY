@@ -8,34 +8,42 @@ public class Dp {
 		digit[0] = new int[] {N};
 		if(N==number) return 1;
 		
-		Nstring = Nstring + Nstring;
-		digit[1] = new int[] {N*N,N+N,N-N,N/N,Integer.parseInt(Nstring)};
-		
-		for(int test:digit[1]) {
-			if(number==test) return 2;
-		}
+//		Nstring = Nstring + Nstring;
+//		digit[1] = new int[] {N*N,N+N,N-N,N/N,Integer.parseInt(Nstring)};
+//		
+//		for(int test:digit[1]) {
+//			if(number==test) return 2;
+//		}
 
 		
-		for(int i=2;i<digit.length;i++) {
+		for(int i=1;i<digit.length;i++) {
 			StringBuffer one = new StringBuffer("");
 				for(int k =0;k<digit[i-1].length;k++) {
 					one.append(digit[i-1][k]+N);
 					one.append(" ");
-					one.append(digit[i-1][k]-N);
-					one.append(" ");
+					if(digit[i-1][k]-N>0) {
+						one.append(digit[i-1][k]-N);
+						one.append(" ");		
+					}
 					one.append(digit[i-1][k]*N);
 					one.append(" ");
-					one.append(digit[i-1][k]/N);
-					one.append(" ");
+					if(digit[i-1][k]!=0) {
+						one.append(digit[i-1][k]/N);
+						one.append(" ");
+					}
+					
 			}
 			Nstring = Nstring + String.valueOf(N);
 			one.append(Nstring);
+			System.out.println(one.toString());
 			digit[i] = Arrays.stream(one.toString().split(" ")).mapToInt(Integer::parseInt).toArray();
+			
 			for(int test=0;test<digit[i].length;test++) {
 				if(digit[i][test]==number) {
 					return i+1;
 				}
 			}
+			
 		}
 		return -1;
    }
@@ -44,7 +52,8 @@ public class Dp {
 		Dp dp = new Dp();
 		
 		//입력예시 5 12 /// 2 11 /// 5 31168
-		System.out.println(dp.solution(5, 31168));
+		//결과 4/3/-1
+		System.out.println(dp.solution(5, 12));
 	}
 
 }
