@@ -1,4 +1,4 @@
-# 2월 14일 발표
+# 2월 15일 발표
 
 1번 문제 연구소 https://www.acmicpc.net/problem/14502
 
