@@ -1,10 +1,12 @@
+package _220215.Hyeonil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Main {
+public class BoJ1759 {
 	public static int N;
 	public static int M;
 	public static boolean checked[];
