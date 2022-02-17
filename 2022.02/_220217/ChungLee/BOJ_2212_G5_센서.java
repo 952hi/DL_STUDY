@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Stream;
 
+
+// 256ms
 public class BOJ_2212_G5_센서 {
 
 	public static void main(String[] args) throws NumberFormatException, IOException {

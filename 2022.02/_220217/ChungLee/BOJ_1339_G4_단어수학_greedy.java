@@ -13,6 +13,7 @@ import java.util.Map;
 
 // first try : 무지성 DFS를 사용했지만 시간초과
 // second try : 가중치 따른 비교
+// 문제 접근 때 어떻게 풀어야될지에 대해 좀 더 고민하고 인사이트를 키워야겠다고 생각.
 // 문자를 숫자로 치환하는 과정에서 가중치를 따로 저장하거나 정렬하는 과정이 번거로웠음.
 public class BOJ_1339_G4_단어수학_greedy {
 	static class charWeight implements Comparable<charWeight> {
@@ -36,7 +37,7 @@ public class BOJ_1339_G4_단어수학_greedy {
 	static Map<Character, String> fnl = new HashMap<>();
 	static String[] words = null;
 	static int sum = 0;
-
+	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -59,6 +60,7 @@ public class BOJ_1339_G4_단어수학_greedy {
 				}
 			}
 		}
+		
 		// 맵 크기만큼 가중치 배열 생성
 		int[] weight = new int[map.size()];
 		// 단어수만 반복하며 각 단어의 알파벳이 가지는 가중치를 가중치 배열에 저장
