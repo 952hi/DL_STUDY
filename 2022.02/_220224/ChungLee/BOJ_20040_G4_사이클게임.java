@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// 메모리: 124932KB, 시간: 720ms
 public class BOJ_20040_G4_사이클게임 {
 	static int nodeCnt;
 	static int N[];
@@ -14,10 +15,10 @@ public class BOJ_20040_G4_사이클게임 {
 		end = FindSet(end);
 		if (start == end)
 			return false;
-		if(N[end] < N[start]) {
+		if (N[end] < N[start]) {
 			N[end] += N[start];
 			N[start] = end;
-		}else {
+		} else {
 			N[start] += N[end];
 			N[end] = start;
 		}
@@ -25,7 +26,7 @@ public class BOJ_20040_G4_사이클게임 {
 	}
 
 	static int FindSet(int a) {
-		if (N[a] <0)
+		if (N[a] < 0)
 			return a;
 		return N[a] = FindSet(N[a]);
 	}

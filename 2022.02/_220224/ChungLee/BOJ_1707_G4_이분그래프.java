@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
+//메모리: 273036KB, 시간: 1220ms
+// weighted union find : https://ziegler.tistory.com/101
 public class BOJ_1707_G4_이분그래프 {
 	static int[] isVisit;
 	static int nodeCnt;
