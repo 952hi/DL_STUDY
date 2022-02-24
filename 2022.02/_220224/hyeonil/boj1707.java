@@ -1,28 +1,32 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.StringTokenizer;
-public class boj1707 {
-	static int p[],n,m;
-	public static void main(String[] args) throws NumberFormatException, IOException {
+import java.util.*;
+public class boj1717 {
+	static int[] p;
+	public static void main(String[] args) throws IOException {
+		BufferedWriter bw =new BufferedWriter(new OutputStreamWriter(System.out));
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringBuilder sb = new StringBuilder();
-		StringTokenizer stz;
-		int tc = Integer.parseInt(br.readLine());
-		for(int t=0;t<tc;t++) {
+		StringTokenizer stz = new StringTokenizer(br.readLine()," ");
+		int n = Integer.parseInt(stz.nextToken());
+		int m = Integer.parseInt(stz.nextToken());
+		p = new int[n+1];
+		int a,b,c;
+		for(int i=0;i<n+1;i++) p[i]=i;
+		for(int i=0;i<m;i++) {
 			stz = new StringTokenizer(br.readLine()," ");
-			n = Integer.parseInt(stz.nextToken());
-			m = Integer.parseInt(stz.nextToken());
-			p = new int[n+1];
-			for(int i=1;i<n+1;i++) p[i] = i;
-			for(int i=0;i<m;i++) {
-				stz = new StringTokenizer(br.readLine()," ");
-				union(Integer.parseInt(stz.nextToken()),Integer.parseInt(stz.nextToken()));
+			a=Integer.parseInt(stz.nextToken());
+			b=Integer.parseInt(stz.nextToken());
+			c=Integer.parseInt(stz.nextToken());
+			if(a == 0) union(b, c);
+			else if(a==1) {
+				if(find(b)==find(c)) sb.append("YES").append("\n");
+				else sb.append("NO").append("\n");
 			}
-			System.out.println(Arrays.toString(p));
 		}
+		sb.setLength(sb.length()-1);
+		bw.write(sb.toString());
+		bw.flush();
 	}
-	
 	static int find(int x) {
 		if(x==p[x]) return x;
 		return p[x] = find(p[x]);
@@ -30,10 +34,9 @@ public class boj1707 {
 	static void union(int x,int y) {
 		x = find(x);
 		y = find(y);
-		
-		if(x==y) return;
-		if(x<y) p[y] = x;
-		else p[x] = y;
+		if(x == y) return;
+		if(x>y) p[x] =y;
+		else p[y] = x;
 		return;
 	}
 }
