@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+//41764kb, 360ms
 class Reader {
 	private int bfs = 1 << 16;
 	private byte[] buffer = new byte[bfs];

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+//메모리 : 14636KB, 140ms
+
 public class BOJ_1726_G3_로봇 {
 	static class Reader {
 		private int bfs = 1 << 16;
