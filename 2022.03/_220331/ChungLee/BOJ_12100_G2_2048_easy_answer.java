@@ -3,6 +3,7 @@ package _220331.ChungLee;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+
 //https://www.acmicpc.net/problem/12100
 //메모리 : 18464KB, 시간 : 140ms
 public class BOJ_12100_G2_2048_easy_answer {
@@ -57,9 +58,11 @@ public class BOJ_12100_G2_2048_easy_answer {
 		int next = 0;
 
 		if (direct == 1) {
+			//유효한 범위에서 진행방향으로 빈칸이 남아있다면 이동할 칸수를 카운트
 			while (i - next - 1 >= 0 && board[i - next - 1][j] == 0) {
 				next++;
 			}
+			//카운트된 수로 노드를 이동
 			if (next > 0) {
 				board[i - next][j] = board[i][j];
 				board[i][j] = 0;
@@ -93,31 +96,41 @@ public class BOJ_12100_G2_2048_easy_answer {
 			return true;
 		return false;
 	}
-
+	//합치는 구간
 	static boolean move(int direct, int board[][]) {
 		boolean mvCnt = false;
 		if (direct == 1) {
+			// 행을 순회
 			for (int i = 0; i < N - 1; i++) {
+				// 열을 순회
 				for (int j = 0; j < N; j++) {
+					// 0이 아닌 값이 들어있을 때
 					if (board[i][j] > 0) {
 						int next = 1;
+						// 진행 방향 반대방향으로 자신과 같은 수를 탐색
 						while (i + next < N) {
+							// 빈칸이라면 다음 칸 탐색
 							if (board[i + next][j] == 0) {
 								next++;
 								continue;
-							} else if (board[i + next][j] == board[i][j]) {
-								board[i][j] += board[i + next][j];
+							}
+							// 값이 같다면 자신의 값을 2배로 만들고 합쳤기 때문에 최대값을 갱신해준다.
+							// 탐색한 노드는 0으로 초기화해주고 움직임이 있었음을 체크한다.
+							else if (board[i + next][j] == board[i][j]) {
+								board[i][j] *=2;
 								max = Math.max(max, board[i][j]);
 								board[i + next][j] = 0;
 								mvCnt = true;
 							}
 							break;
 						}
+						//합친 후 진행방향으로 옮겨주는 구간
 						if (MoveDirect(direct, board, i, j))
 							mvCnt = true;
 					}
 				}
 			}
+			//마지막 자리는 자리만 옮겨줌.
 			for (int j = 0; j < N; j++)
 				if (board[N - 1][j] != 0)
 					if (MoveDirect(direct, board, N - 1, j))
@@ -206,18 +219,21 @@ public class BOJ_12100_G2_2048_easy_answer {
 
 	static void dfs(int cnt, int crntBoard[][]) {
 		boolean notMove = false;
+		//5번 초과부터는 진행 X
 		if (cnt == 5)
 			return;
 
 		int[][] copyBoard = new int[N][];
 
 		for (int i = 1; i <= 4; i++) {
+			//움직임이 없다면 배열을 사용하지 않았으므로 중복 복사 하지 않음.
 			if (!notMove) {
 				for (int j = 0; j < N; j++) {
 					copyBoard[j] = Arrays.copyOf(crntBoard[j], crntBoard[j].length);
 				}
 				notMove = true;
 			}
+			//움직임이 있다면 cnt를 증가시켜준 뒤 다음 칸으로 이동
 			if (move(i, copyBoard)) {
 				notMove = false;
 				dfs(cnt + 1, copyBoard);

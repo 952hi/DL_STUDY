@@ -3,6 +3,7 @@ package _220331.ChungLee;
 import java.io.*;
 import java.util.*;
 
+//메모리 : 11596KB, 시간 : 84ms
 public class BOJ_17404_G4_RGB거리2 {
 	static class Reader {
 		int bfs = 1 << 5;
