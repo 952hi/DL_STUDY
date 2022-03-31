@@ -46,7 +46,7 @@ public class BOJ_2206_G4_벽부수고이동하기 {
 			int crntbkW = crnt.bkW;
 			int V = crnt.V;
 			if (crntY == N && crntX == M) {
-				System.out.println(Math.min(dist[N * M - 1][0], dist[N * M - 1][1]));
+				System.out.println(dist[N * M - 1][crntbkW]);
 				return true;
 			}
 			// 방문하려는데 이미 더 작은 값이 저장되어 있다면

@@ -7,17 +7,17 @@ public class BOJ_1300_G2_K번째수 {
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
 		int N = s.nextInt();
-		int K = s.nextInt();
+		long K = s.nextInt();
 
-		int left = 1;
-		int right = K;
-		int ans = 0;
+		long left = 1;
+		long right = K;
+		long ans = 0;
 		while (true) {
 			if (left > right)
 				break;
-			int mid = (left + right) / 2;
+			long mid = (left + right) / 2;
 
-			int cnt = 0;
+			long cnt = 0;
 			for (int i = 1; i <= N; i++) {
 				cnt += Math.min(mid / i, N);
 			}
