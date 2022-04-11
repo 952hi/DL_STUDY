@@ -3,9 +3,6 @@ package _220407.ChungLee;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Scanner;
 
 public class BOJ_G2_청소년상어 {
 	static class Reader {
@@ -21,7 +18,6 @@ public class BOJ_G2_청소년상어 {
 					buffer[0] = -1;
 			}
 			return buffer[bufferPos++];
-
 		}
 
 		int nextInt() throws IOException {
@@ -123,6 +119,7 @@ public class BOJ_G2_청소년상어 {
 		return tmpF;
 	}
 
+	// 디버깅용 출력 코드
 	static void printState(int[][] bd, int[][] fish, int[] shk) {
 		System.out.println();
 		for (int j = 0; j < 4; j++) {
@@ -163,7 +160,6 @@ public class BOJ_G2_청소년상어 {
 
 	// 상어 움직임
 	static void dfs(int[] shk, int[][] fish, int[][] bd) {
-		maxSum = Math.max(maxSum, sum);
 		moveFish(fish, bd);
 		int SnextY = shk[1];
 		int SnextX = shk[2];
@@ -200,14 +196,14 @@ public class BOJ_G2_청소년상어 {
 					sum -= bd[SnextY][SnextX];
 				}
 				// 다음 칸에 물고기가 없다면
-				else {
+				else 
 					continue;
-				}
 			}
 			// 상어가 범위를 벗어난다면
-			else
+			else {
+				maxSum = Math.max(maxSum, sum);
 				break;
-
+			}
 		}
 	}
 
