@@ -1,61 +1,56 @@
-package _0414;
-
 import java.io.*;
 import java.util.*;
 
 public class Boj1461 {
-	static HashMap<String, Integer> network;
-	static HashMap<String, String> parent;
-	
-	public static String find(String p) {
-		if(parent.get(p)==p) {
-			return p;
+	public static int go(int[] arr, int size, int m) {
+		int step = 0, start = -1;
+		if(size%m != 0) {//m개로 나눠떨어지지 않을 때, 가까운 걸 pick
+			start = size%m-1;
+			step += arr[start]*2;
 		}
-		else { 
-			String np = find(parent.get(p));
-			parent.put(p, np);
-			return np;
+		for(int i=start+m; i<size; i+=m) {
+			step+=arr[i]*2;
 		}
+		return step;
 	}
-	
-	public static int union(String p1, String p2) {
-		p1 = find(p1);
-		p2 = find(p2);
-		if(p1==p2) {
-			return network.get(p1);
-		}
-		
-		network.put(p1, network.get(p1)+network.get(p2));
-		parent.put(p2, p1);//갱신
-		
-		return network.get(p1);
-	}
-	
+
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = null;
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());//책의 개수
+		int M = Integer.parseInt(st.nextToken());//들 수 있는 책의 수
 		
-		int T = Integer.parseInt(br.readLine());
-		StringBuilder sb = new StringBuilder();
-		for(int t=0; t<T; t++) {
-			int F = Integer.parseInt(br.readLine());
-			network = new HashMap<>();
-			parent = new HashMap<>();
-			for(int i=0; i<F; i++) {
-				st = new StringTokenizer(br.readLine());
-				String p1 = st.nextToken();
-				String p2 = st.nextToken();
-				if(!network.containsKey(p1)) {
-					parent.put(p1, p1);
-					network.put(p1, 1);
-				}
-				if(!network.containsKey(p2)) {
-					parent.put(p2, p2);
-					network.put(p2, 1);
-				}
-				sb.append(union(p1, p2)).append("\n");
+		st = new StringTokenizer(br.readLine());
+		
+		int[] left = new int[N];//음수
+		int[] right = new int[N];//양수
+		Arrays.fill(left, Integer.MAX_VALUE);
+		Arrays.fill(right, Integer.MAX_VALUE);
+		
+		int lIdx = 0, rIdx = 0;
+		for(int i=0; i<N; i++) {
+			int n = Integer.parseInt(st.nextToken());
+			if(n<0) {
+				left[lIdx++] = -n;
+			}
+			else {
+				right[rIdx++] = n;
 			}
 		}
-		System.out.println(sb.toString());
+		
+		int max = 0;
+		int result = 0;
+		if(lIdx > 0) {
+			Arrays.sort(left);
+			result += go(left, lIdx, M);
+			max = left[lIdx-1];
+		}
+		
+		if(rIdx > 0) {
+			Arrays.sort(right);
+			result += go(right, rIdx, M);
+			max = Math.max(max, right[rIdx-1]);
+		}
+		System.out.println(result-max);
 	}
 }
