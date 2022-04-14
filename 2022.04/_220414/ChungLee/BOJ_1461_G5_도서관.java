@@ -49,25 +49,36 @@ public class BOJ_1461_G5_도서관 {
 		int handMax = r.nextInt();
 		int[] bookArr = new int[bookCnt];
 		int Lcnt = 0, Rcnt = 0;
+
 		for (int i = 0; i < bookCnt; i++) {
 			bookArr[i] = r.nextInt();
 			if (bookArr[i] < 0)
+				// 왼쪽 도서 권수
 				Lcnt++;
 		}
+		// 오른쪽 도서 권수
 		Rcnt = bookCnt - Lcnt;
+		// 정렬
 		Arrays.parallelSort(bookArr);
+		
+		//왼쪽에 최대 권수보다 더 많은 책이 있을 때
 		if (Lcnt > handMax) {
+			//최적 정리를 위해 먼저 정리해야할 도서 수
 			int mod = Lcnt % handMax;
 			if (mod != 0) {
 				sum += bookArr[Lcnt - mod] * 2;
 				Lcnt -= mod;
 			}
+			//왼쪽에 한 번에 들 수 있는 도서 권수만 남기고 모두 정리
 			while (Lcnt != handMax) {
 				sum += bookArr[Lcnt - handMax] * 2;
 				Lcnt -= handMax;
 			}
 		}
+		//음수기 때문에 값 반전
 		sum = -sum;
+		
+		// 오른쪽 도서 정리
 		int RbookStrtPos = bookCnt - Rcnt - 1;
 		if (Rcnt > handMax) {
 			int mod = Rcnt % handMax;

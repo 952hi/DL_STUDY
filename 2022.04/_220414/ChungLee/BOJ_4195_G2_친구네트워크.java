@@ -84,20 +84,21 @@ public class BOJ_4195_G2_친구네트워크 {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
-		
+
 		int tc = r.nextInt();
 		boolean LFirst = false, RFirst = false;
 		Map<String, Integer> rel;
-		int[] setArr;
-		int[] cnting = new int[200001];
+		int[] cnting;
 		for (int TC = 0; TC < tc; TC++) {
 			int F = r.nextInt();
 			int fCnt = 0;
 			int LFNUM = 0, RFNUM = 0;
 			rel = new HashMap<>();
-			setArr = new int[200001];
-
+			setArr = new int[F*2+1];
+			cnting = new int[F*2+1];
+			
 			for (int i = 0; i < F; i++) {
+				int max = 0;
 				st = new StringTokenizer(r.readLine());
 				String name1 = st.nextToken();
 				if (!rel.containsKey(name1)) {
@@ -123,79 +124,49 @@ public class BOJ_4195_G2_친구네트워크 {
 				// 연결된 친구 카운팅하기
 				// 둘다 처음 들어왔을 때
 				if (LFirst && RFirst) {
-					sb.append(2).append("\n");
+					max = 2;
 					cnting[RFNUM] = 2;
 					cnting[LFNUM] = 2;
 					UnionFind(RFNUM, LFNUM);
 					LFirst = false;
 					RFirst = false;
-
 				}
-				
+
 				// 왼쪽 친구가 처음 들어왔을 때
 				else if (LFirst) {
 					// 부모 찾기
 					int parentNum = FindSet(RFNUM);
-					// 둘 중 더 큰 값으로 둘 다 최신화
-					if (cnting[parentNum] < cnting[RFNUM]) {
-						cnting[parentNum] = cnting[RFNUM];
-					} else {
-						cnting[RFNUM] = cnting[parentNum];
-					}
-					// 신규 노드가 들어왔기 때문에 +1
-					if (RFNUM != parentNum)
-						cnting[parentNum]++;
-					cnting[RFNUM]++;
+					cnting[parentNum]++;
 
-					// 뒤에 들어온 친구도 가장 큰 값으로 최신화
-					cnting[LFNUM] = cnting[RFNUM];
 					// 연결
 					UnionFind(RFNUM, LFNUM);
-					sb.append(cnting[RFNUM]).append("\n");
+					max = cnting[FindSet(RFNUM)];
 					LFirst = false;
 				}
 				// 오른쪽 친구가 처음 들어왔을 때
 				else if (RFirst) {
 					// 부모 찾기
 					int parentNum = FindSet(LFNUM);
-					if (cnting[parentNum] < cnting[LFNUM]) {
-						cnting[parentNum] = cnting[LFNUM];
-					} else {
-						cnting[LFNUM] = cnting[parentNum];
-					}
-					if (LFNUM != parentNum)
-						cnting[parentNum]++;
-					cnting[LFNUM]++;
-
-					cnting[RFNUM] = cnting[LFNUM];
+					cnting[parentNum]++;
 
 					UnionFind(RFNUM, LFNUM);
-					sb.append(cnting[LFNUM]).append("\n");
+					max = cnting[FindSet(LFNUM)];
 					RFirst = false;
-				}
-				//
-				else {
-					// 둘의 부모가 같을 때
+				} else {
 					int LpN = FindSet(LFNUM);
 					int RpN = FindSet(RFNUM);
 					// 부모가 다를 때
 					if (LpN != RpN) {
-						int max = Math.max(cnting[LFNUM], cnting[LpN]) + Math.max(cnting[RFNUM], cnting[RpN]);
-						cnting[LFNUM] = max;
-						cnting[LpN] = max;
-						cnting[RFNUM] = max;
-						cnting[RpN] = max;
+						int sum = cnting[LpN] + cnting[RpN];
 						UnionFind(LFNUM, RFNUM);
-						sb.append(max).append("\n");
+						cnting[FindSet(LFNUM)] = sum;
+						max = sum;
 					} else {
 						int parentNum = FindSet(LFNUM);
-						int max = Math.max(cnting[RFNUM], Math.max(cnting[parentNum], cnting[LFNUM]));
-						cnting[RFNUM] = max;
-						cnting[LFNUM] = max;
-						cnting[parentNum] = max;
-						sb.append(cnting[parentNum]).append("\n");
+						max = cnting[parentNum];
 					}
 				}
+				sb.append(max).append("\n");
 			}
 		}
 		bw.write(sb.toString());
