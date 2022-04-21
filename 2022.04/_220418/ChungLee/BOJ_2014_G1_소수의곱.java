@@ -2,16 +2,10 @@ package _220418.ChungLee;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
 
-// 중복없이 정렬되는 자료구조 TreeSet을 활용해서 가능한 모든 경우의 수를 입력넣어주려 했습니다.
-
-// 1. 처음에 입력받는 하나의 소수마다 전체 입력받는 소수를 순차적으로 곱하는 과정을 계속 반복합니다. 
-// 2. 큐를 활용해서 연산을 한 값을 TreeSet과 queue에 넣어줘서 계속해서 연산과 입력이 가능하게 합니다.
-// 3. 입력받은 한 소수를 10만개 입력받을 때까지 혹은 연산 값이 2^31승에 도달할 때까지 반복합니다.
-
-// 시간 복잡도 : 첫 입력으로 주어지는 소수의 갯수는 최대 100개이기 때문에 100 * 10만 = 1000만으로 충분히 수용 가능하리라 생각했습니다.
 public class BOJ_2014_G1_소수의곱 {
 	static class Reader {
 		int bfs = 1 << 16;
@@ -50,23 +44,36 @@ public class BOJ_2014_G1_소수의곱 {
 		}
 	}
 
-	static Set<Integer> set = new TreeSet<>();
-
 	public static void main(String[] args) {
 		Reader r = new Reader();
-		System.out.println();
 		int K = r.nextInt();
 		int N = r.nextInt();
-		int[] V = new int[K];
 
+		// 초기 입력 소수의 길이만큼 배열 생성
+		long[] V = new long[K];
+		// 소수들의 곱의 값을 저장할 우선순위 큐 생성
+		PriorityQueue<Long> pq = new PriorityQueue<Long>();
+		// 시작 소수들을 입력받고 동시에 pq에 저장
 		for (int i = 0; i < K; i++) {
 			V[i] = r.nextInt();
-			set.add(V[i]);
+			pq.add(V[i]);
 		}
-		for (int i = 0; i < K; i++) {
-			for (int j : set) {
-				System.out.println(j);
+
+		long crnt, value;
+
+		// 찾고자 하는 소수의 번지수만큼 반복
+		for (int i = 0; i < N; i++) {
+			crnt = pq.poll();
+			// 꺼낸 값들을 처음 입력받은 소수들과 또 다시 반복하며 곱셈
+			for (int j = 0; j < K; j++) {
+				// pq에서 가장 작은 값과 입력 받은 소수들을 순서대로 곱셈 후 저장
+				value = crnt * V[j];
+				pq.add(value);
+				// 곱셈한 값이 처음에 입력 받은 소수들로 나눠지는 경우(중복) 다음 탐색
+				if (crnt % V[j] == 0)
+					break;
 			}
+
 		}
 
 	}

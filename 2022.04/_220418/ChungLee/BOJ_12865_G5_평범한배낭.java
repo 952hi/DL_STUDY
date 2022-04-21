@@ -47,44 +47,38 @@ public class BOJ_12865_G5_평범한배낭 {
 
 	public static void main(String[] args) {
 		Reader r = new Reader();
-		N = r.nextInt();
-		K = r.nextInt();
-		int[][] dp = new int[N][K + 1];
-		items = new int[N][2];
-		int weight = r.nextInt(), value = r.nextInt();
-		int cnt = 0, max = 0;
-		for (int i = 1; i <= K; i++) {
-			if (i >= weight) {
-				dp[0][i] = value;
-			}
-		}
-		for (int n = 1; n < N; n++) {
-			weight = r.nextInt();
-			value = r.nextInt();
-			for (int j = 1; j <= K; j++) {
-				
-				if (j >= weight) {
-					
-					if (dp[n - 1][j] < value) {
-						dp[n][j] = value;
-					}else if(dp[n][j] > dp[n-1][j])
-						continue;
-					else{
-						dp[n][j] = dp[n-1][j];
-					}
-				}
-				//현재 무게보다 작은 곳을 확인할 때 물건이 있으
-				if(dp[n-1][j] != 0) {
-					if(j + weight <= K && dp[n-1][j+weight] < value + dp[n-1][j]) {
-						dp[n][j+weight] = value + dp[n-1][j];
-					}
-				}
-			}
-		}
-		for (int i = 1; i <= K; i++) {
-			max = Math.max(dp[N - 1][i], max);
-		}
-		System.out.println(max);
-	}
+		int N = r.nextInt();
+		int K = r.nextInt();
+		int[][] data = new int[N][2];
+		int[][] nap = new int[N][K + 1];
 
+		for (int i = 0; i < N; i++) {
+			data[i][0] = r.nextInt();
+			data[i][1] = r.nextInt();
+		}
+		// 우선 첫 열을 배열에 저장
+		for (int i = 0; i <= K; i++) {
+			if (i >= data[0][0])
+				nap[0][i] = data[0][1];
+		}
+		// 모든 물건을
+		for (int i = 1; i < N; i++) {
+			// 각 무게 별로 검사
+			for (int j = 1; j <= K; j++) {
+
+				// 현재 물건의 무게보다 작은 case일 때
+				if (j < data[i][0]) {
+					// 이전 값, 현재 들어와있는 값 중 큰 값을 저장
+					nap[i][j] = nap[i - 1][j];
+				}
+				// 현재 물건의 무게보다 큰 case일 때
+				else {
+					nap[i][j] = Math.max(nap[i - 1][j], nap[i - 1][j - data[i][0]] + data[i][1]);
+				}
+
+			}
+		}
+		System.out.println(nap[N - 1][K]);
+
+	}
 }
