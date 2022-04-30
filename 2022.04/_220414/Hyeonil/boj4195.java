@@ -1,6 +1,8 @@
+package _220414.Hyeonil;
+
 import java.io.*;
 import java.util.*;
-public class acm4195 {
+public class boj4195 {
 	static class Reader {
 	      int bfs = 1 << 16;
 	      byte[] buffer = new byte[bfs];
@@ -60,6 +62,7 @@ public class acm4195 {
 		StringTokenizer stz;
 		StringBuilder sb = new StringBuilder();
 		HashMap<String, Integer> name;
+		long start = System.currentTimeMillis();
 		for(int t=0;t<tc;t++) {
 			n = in.nextInt();
 			parents = new int[2*n+1];
@@ -90,6 +93,9 @@ public class acm4195 {
 			}
 			name.clear();
 		}
+		long end = System.currentTimeMillis();
+		sb.append(end-start);
+		
 		sb.setLength(sb.length()-1);
 		bw.write(sb.toString());
 		bw.flush();

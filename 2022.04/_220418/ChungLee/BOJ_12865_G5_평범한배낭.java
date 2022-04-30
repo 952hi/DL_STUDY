@@ -75,10 +75,8 @@ public class BOJ_12865_G5_평범한배낭 {
 				else {
 					nap[i][j] = Math.max(nap[i - 1][j], nap[i - 1][j - data[i][0]] + data[i][1]);
 				}
-
 			}
 		}
 		System.out.println(nap[N - 1][K]);
-
 	}
 }
