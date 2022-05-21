@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
+//메모리 : 30540KB, 시간 : 224MS
 public class BOJ_9935_G4_문자열폭발_me {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -31,9 +32,8 @@ public class BOJ_9935_G4_문자열폭발_me {
 				stackI[stackIcnt++] = cnt++;
 			} else {
 				stackI[stackIcnt++] = -1;
-
 			}
-
+			
 			stackC[stackCcnt++] = main[i];
 			//배열로 관리할 경우 pop 과정 단축 가능
 			if (stackI[stackIcnt - 1] == subL - 1) {

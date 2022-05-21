@@ -42,7 +42,7 @@ public class BOJ_2098_G1_외판원순회 {
 			return rtn;
 		}
 	}
-
+	
 	static int dfs(int city, int visitBit) {
 		// 모든 도시 방문했다면
 		if (visitBit == (1 << N) - 1) {
@@ -81,6 +81,7 @@ public class BOJ_2098_G1_외판원순회 {
 				bd[i][j] = r.nextInt();
 			}
 		}
+		//dp배열 초기화
 		for (int i = 0; i < N; i++) {
 			Arrays.fill(dp[i], intmax);
 		}
