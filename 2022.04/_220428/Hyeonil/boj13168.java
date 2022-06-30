@@ -19,7 +19,7 @@ public class boj13168 {
 		int M = Integer.parseInt(br.readLine());
 		int[] res = new int[M];
 		stz = new StringTokenizer(br.readLine());
-		// 여행경로 저장
+		// PG_여행경로 저장
 		for(int i=0;i<M;i++) {
 			chk = stz.nextToken();
 			res[i] = map.get(chk);

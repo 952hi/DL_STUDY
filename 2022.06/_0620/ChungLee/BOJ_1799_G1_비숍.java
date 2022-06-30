@@ -1,7 +1,9 @@
+package _0620.ChungLee;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class Main {
+public class BOJ_1799_G1_비숍 {
 	static class Reader {
 		int bfs = 1 << 16;
 		byte[] buffer = new byte[bfs];
