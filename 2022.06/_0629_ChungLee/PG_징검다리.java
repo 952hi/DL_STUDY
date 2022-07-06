@@ -39,7 +39,6 @@ public class PG_징검다리 {
 	}
 
 	public static int solution(int distance, int[] rocks, int n) {
-		// 이분탐색은 오름차순으로 정렬되어있는 경우를 전제로한다.
 		Arrays.sort(rocks);
 		long ans = 0;
 		long left = 1, right = distance, mid = 0;
@@ -49,28 +48,30 @@ public class PG_징검다리 {
 			int prev = 0;
 			mid = (left + right) / 2;
 
+			// 매번 간격 조정 후 모든 돌들의 거리를 비교
 			for (int i = 0; i < rocks.length; ++i) {
+				// 만약 mid 값보다 작거나 현재 값으로 최신화한 값을 뺀 값이 mid값보다 작을 때
 				if (rocks[i] - prev < mid) {
-					// mid보다 작은 값이 존재한다는 뜻으로
-					// 해당 돌을 제거한다.
+					// 제거할 수 있는 돌이 존재
 					cnt++;
-				} else {
-					// mid보다 크거나 같은 값이 존재하므로
-					// prev를 현재 돌로 초기화한다.
+				}
+				// 만약 mid값보다 크다면 현재값을 현재 돌의 위치로 지정
+				else {
 					prev = rocks[i];
 				}
 			}
 
-			// 마지막 돌과 도착점 사이의 거리도 확인한다.
+			// 마지막 돌과 도착점 사이의 거리도 확인
 			if (distance - prev < mid)
 				cnt++;
-			//없애야 하는 돌 갯수보다 작거나 같으면
+			// 없애야 하는 돌 갯수보다 작거나 같을 때
 			if (cnt <= n) {
-				// 주어진 n 보다 작거나 같은 만큼 돌을 없애서
-				// 최솟값 x를 만들 수 있다.
-				ans = mid > ans ? mid : ans;
+				// 통과되었기 때문에 바위 사이 값인 mid값을 키우기 위해 left를 최신화
 				left = mid + 1;
-			} else {
+				ans = mid > ans ? mid : ans;
+			} 
+			//없애야 하는 돌보다 더 많은 돌을 없애야 한다면 최소최대값(mid)을 줄이기 위해 right를 최신화
+			else {
 				right = mid - 1;
 			}
 		}

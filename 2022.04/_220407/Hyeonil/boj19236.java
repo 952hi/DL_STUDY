@@ -1,3 +1,5 @@
+package _220407.Hyeonil;
+
 import java.io.*;
 import java.util.*;
 public class boj19236 {

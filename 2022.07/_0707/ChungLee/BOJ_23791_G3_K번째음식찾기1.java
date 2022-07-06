@@ -1,7 +1,9 @@
+package _0707.ChungLee;
+
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class BOJ_23791_G3_K번째음식찾기1 {
 	static int CntoppositeFood(int[][] variable, int range, int limit) {
 		int left = 0, right = range - 1, mid = 0, dest = -1;
 		while (left <= right) {
