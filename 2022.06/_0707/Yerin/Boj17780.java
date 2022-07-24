@@ -62,7 +62,7 @@ public class Boj17780 {
 		N = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
 		map = new int[N+1][N+1];
-		nodes = new int[K][3];//r, c, d
+		nodes = new int[K][3];//row, c, d
 		nodeMap = new LinkedList[N+1][N+1];
 		
 		//체스판 입력 => 0:흰, 1:빨, 2:파

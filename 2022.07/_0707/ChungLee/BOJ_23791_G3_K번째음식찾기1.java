@@ -59,9 +59,17 @@ public class BOJ_23791_G3_K번째음식찾기1 {
 		StringBuilder sb = new StringBuilder();
 		int N = br.nextInt();
 		// 0 : 데이터, 1 : 순서, 2 : 양식, 한식 구분
-		int[][] arr = new int[N * 2][3], arrA = new int[N][3], arrB = new int[N][3];
+		//한식, 양식 모두 저장하는 배열
+		int[][] arr = new int[N * 2][3];
+
+		//한식만 저장하는 배열
+		int[][] arrA = new int[N][3];
+		
+		//양식만 저장하는 배열
+		int[][] arrB = new int[N][3];
 		int Acnt = 0, Bcnt = 0;
 
+		// 한식, 양식을 입력 받음
 		for (int i = 1; i <= 2; i++) {
 			for (int j = 0; j < N; j++) {
 				// 움삭 K의 값
@@ -81,7 +89,10 @@ public class BOJ_23791_G3_K번째음식찾기1 {
 				}
 			}
 		}
+		
+		//모두 입력받은 배열은 음식값을 기준으로 오름차순 정렬 시행
 		Arrays.sort(arr, (int[] o1, int[] o2) -> (o1[0] - o2[0]));
+
 		boolean ok = false;
 		int Q = br.nextInt(), Ai, Bi, k, left, right, mid, value;
 		for (int i = 0; i < Q; i++) {
@@ -90,12 +101,13 @@ public class BOJ_23791_G3_K번째음식찾기1 {
 			Ai = br.nextInt();
 			// 양식
 			Bi = br.nextInt();
-			// ~번째 요리
+			// 원하는 ~번째 요리
 			k = br.nextInt();
-			
+
 			left = 0;
 			right = N - 1;
-			// case A
+			
+			// 한식을 기준으로 특장 한식 값보다 더 작은 양식의 개수를 구해서 두 음식의 번호를 더했을 때 k가 되는지 확인
 			while (left <= right) {
 				mid = (left + right) / 2;
 
@@ -120,7 +132,8 @@ public class BOJ_23791_G3_K번째음식찾기1 {
 
 			left = 0;
 			right = N - 1;
-			// case B
+			
+			// 양식을 기준으로 특장 양식 값보다 더 작은 한식의 개수를 구해서 두 음식의 번호를 더했을 때 k가 되는지 확인 
 			while (left <= right) {
 				mid = (left + right) / 2;
 
