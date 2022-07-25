@@ -44,16 +44,15 @@ public class BOJ_18500_G1_미네랄2 {
 		}
 		boolean canBreak;
 		int stickCnt = Integer.parseInt(br.readLine());
-		int stick, height, destM, nextY, nextX, crntY, crntX, lowest, dist, tmp, bottom;
+		int stick, height, destM, nextY, nextX, crntY, crntX, dist, tmp, shst, destY = 0, destX = 0;
 		int[] crnt;
-		Queue<int[]> q = new LinkedList<int[]>();
-		boolean[][] visit;
+		Queue<int[]> q = new LinkedList<int[]>(), canFall = new LinkedList<int[]>();
+		boolean[][] visit, eachVisit;
 		st = new StringTokenizer(br.readLine());
 
 		// 막대기 수만큼 반복
 		for (int i = 0; i < stickCnt; i++) {
 			canBreak = false;
-			lowest = 0;
 			stick = Integer.parseInt(st.nextToken());
 			height = row + 1 - stick;
 
@@ -80,6 +79,7 @@ public class BOJ_18500_G1_미네랄2 {
 
 			// bfs로 바로 위에 있던 미네랄부터 탐색
 			// 만약 연결된 미네랄들이 부웅 떠있을 경우 낙하
+
 			// 좌측에서 부셔졌을 경우 상 우 하 중 하나에 분리된 클러스터가 존재할 확률이 있음
 			// 3가지 경우를 다 q에 추가해서 검사하며 검사해야함
 
@@ -89,15 +89,20 @@ public class BOJ_18500_G1_미네랄2 {
 			// 세 방향으로 검사를 시도
 			// 미네랄이 있어야겠지?
 			for (int m = 0; m < 3; m++) {
+				shst = row + 1;
+				// 각각 돌면서 해당되는 범위 파악
+				eachVisit = new boolean[row + 2][col + 2];
 				nextY = height + dydx[breakdown[i % 2][m]][0];
 				nextX = destM + dydx[breakdown[i % 2][m]][1];
 
+				// 방문하지 않았고 미네랄일 때만 첫 시작점으로 넣음
 				if (!visit[nextY][nextX] && bd[nextY][nextX] == 'x') {
 					q.add(new int[] { nextY, nextX });
 					visit[nextY][nextX] = true;
-
-					lowest = nextY;
-				} else
+					eachVisit[nextY][nextX] = true;
+				} 
+				
+				else
 					continue;
 
 				// 미네랄이 가장 높은 높이에 위치하고 있는 경우
@@ -119,70 +124,96 @@ public class BOJ_18500_G1_미네랄2 {
 						if (bd[nextY][nextX] == 'x') {
 							q.add(new int[] { nextY, nextX });
 							visit[nextY][nextX] = true;
-
-							lowest = Math.max(nextY, lowest);
-
+							eachVisit[nextY][nextX] = true;
 						}
 					}
 
 					// 검사할 여지가 있다면
 					if (dist >= 1) {
+						
 						// 아래가 미네랄이면 검사 X
 						if (bd[crntY + 1][crntX] == 'x')
 							continue;
+						
 						// 아래가 바닥이라면 빈칸 0, 추후 검사할 필요 없음
 						else if (bd[crntY + 1][crntX] == 'o')
 							dist = 0;
+						
 						// 빈칸이라면 거리 측정
 						else {
 							// 해당 높이
 							tmp = crntY + 2;
+
 							// 바닥 or 미네랄 탐지 or 이전 최대 거리를 넘길 경우
-							while (bd[tmp][crntX] != 'o' && bd[tmp][crntX] != 'x' && dist > tmp - 1 - crntY) {
+							while (bd[tmp][crntX] != 'o' && bd[tmp][crntX] != 'x') {
 								tmp += 1;
 							}
+							// 모든 낙하점의 위치를 저장
+							// 외곽 지역, x
 
 							dist = tmp - 1 - crntY;
+
+							canFall.add(new int[] { tmp, crntX, dist });
 						}
 					}
 				}
 
-				// 만약 가장 낮은 상태가 아니다 = 공중에 떠있다 = 추락한다
-				if (lowest != row) {
-					canBreak = true;
-					// bfs로 모든 노드 탐색하면서 아래로 내려주기
-					// 첫 노드는 이전 bfs 시작 노드와 같음				
-					q.add(new int[] { height + dydx[breakdown[i % 2][m]][0], destM + dydx[breakdown[i % 2][m]][1] });
-					visit = new boolean[row + 2][col + 2];
-					visit[height - 1][destM] = true;
+				// 0이면 낙하할 것이 존재하지 않음
+				if (dist == 0) {
+					canFall.clear();
+					continue;
+				}
 
-					while (!q.isEmpty()) {
-						crnt = q.poll();
-						crntY = crnt[0];
-						crntX = crnt[1];
-
-						for (int j = 0; j < 4; j++) {
-							nextY = crntY + dydx[j][0];
-							nextX = crntX + dydx[j][1];
-
-							// 방문했다면 재방문 X
-							if (visit[nextY][nextX])
-								continue;
-
-							// 다음 x면 위치 변경
-							if (bd[nextY][nextX] == 'x') {
-								visit[nextY][nextX] = true;
-								q.add(new int[] { nextY, nextX });
-							}
-						}
-						bd[crntY][crntX] = '.';
-						bd[crntY + dist][crntX] = 'x';
-
+				// 기록된 낙하점 중 낙하점이 자신 클러스터면 제외, 다른 클러스터이거나 바닥일 때만 OK, 그중 가장 짧은 것 선택
+				while (!canFall.isEmpty()) {
+					crnt = canFall.poll();
+					crntY = crnt[0];
+					crntX = crnt[1];
+					if (eachVisit[crntY][crntX])
+						continue;
+					if (shst > crnt[2]) {
+						shst = crnt[2];
+						destY = crntY;
+						destX = crntX;
 					}
 				}
-				// 세 방향 중 하나의 방향에서 클러스터를 발견했기 때문에 추후 더 돌지 않음
-				if (canBreak)
-					break;
+
+				// 검사한 클러스터가 분리되었다면 shst만큼 낙하
+				if (shst == row + 2)
+					continue;
+				
+				
+				canBreak = true;
+				// bfs로 모든 노드 탐색하면서 아래로 내려주기
+				// 첫 노드는 이전 bfs 시작 노드와 같음
+				q.add(new int[] { height + dydx[breakdown[i % 2][m]][0], destM + dydx[breakdown[i % 2][m]][1] });
+				visit = new boolean[row + 2][col + 2];
+				visit[height - 1][destM] = true;
+
+				while (!q.isEmpty()) {
+					crnt = q.poll();
+					crntY = crnt[0];
+					crntX = crnt[1];
+
+					for (int j = 0; j < 4; j++) {
+						nextY = crntY + dydx[j][0];
+						nextX = crntX + dydx[j][1];
+
+						// 방문했다면 재방문 X
+						if (visit[nextY][nextX])
+							continue;
+
+						// 다음 x면 위치 변경
+						if (bd[nextY][nextX] == 'x') {
+							visit[nextY][nextX] = true;
+							q.add(new int[] { nextY, nextX });
+						}
+					}
+					bd[crntY][crntX] = '.';
+					bd[crntY + shst][crntX] = 'x';
+				}
+				//분리된 클러스터는 무조건 1개이기 때문에 처리를 해주면 다른 방향은 검사하지 않고 다음 막대기로 넘어감
+				break;
 			}
 		}
 
