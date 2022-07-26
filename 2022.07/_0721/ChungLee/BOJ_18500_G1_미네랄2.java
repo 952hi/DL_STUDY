@@ -3,8 +3,6 @@ package _0721.ChungLee;
 import java.io.*;
 import java.util.*;
 
-// 참고 블로그 : https://moonsbeen.tistory.com/368
-
 //1. 막대기를 던진다.
 //2. 막대기가 미네랄을 만나면 해당 미네랄을 파괴한다.
 //3. 클러스터가 새로 생성되었는지 확인한다.
@@ -44,16 +42,24 @@ public class BOJ_18500_G1_미네랄2 {
 		}
 		boolean canBreak;
 		int stickCnt = Integer.parseInt(br.readLine());
-		int stick, height, destM, nextY, nextX, crntY, crntX, dist, tmp, shst, destY = 0, destX = 0;
+		int stick, height, destM, nextY, nextX, crntY, crntX, dist, tmp, shst;
 		int[] crnt;
-		Queue<int[]> q = new LinkedList<int[]>(), canFall = new LinkedList<int[]>();
+
+		PriorityQueue<int[]> q = new PriorityQueue<>((o1, o2) -> o2[0] - o1[0]);
+
+		Queue<int[]> canFall = new LinkedList<int[]>();
 		boolean[][] visit, eachVisit;
 		st = new StringTokenizer(br.readLine());
 
 		// 막대기 수만큼 반복
 		for (int i = 0; i < stickCnt; i++) {
+			//한 번 낙하했으면 이후 검사해주지 않게 검사
 			canBreak = false;
+			
+			//막대 위치
 			stick = Integer.parseInt(st.nextToken());
+			
+			//2차원 배열에서의 실제 막대 높이
 			height = row + 1 - stick;
 
 			// left throw
@@ -87,7 +93,6 @@ public class BOJ_18500_G1_미네랄2 {
 			visit = new boolean[row + 2][col + 2];
 
 			// 세 방향으로 검사를 시도
-			// 미네랄이 있어야겠지?
 			for (int m = 0; m < 3; m++) {
 				shst = row + 1;
 				// 각각 돌면서 해당되는 범위 파악
@@ -100,8 +105,8 @@ public class BOJ_18500_G1_미네랄2 {
 					q.add(new int[] { nextY, nextX });
 					visit[nextY][nextX] = true;
 					eachVisit[nextY][nextX] = true;
-				} 
-				
+				}
+
 				else
 					continue;
 
@@ -130,15 +135,15 @@ public class BOJ_18500_G1_미네랄2 {
 
 					// 검사할 여지가 있다면
 					if (dist >= 1) {
-						
+
 						// 아래가 미네랄이면 검사 X
 						if (bd[crntY + 1][crntX] == 'x')
 							continue;
-						
+
 						// 아래가 바닥이라면 빈칸 0, 추후 검사할 필요 없음
 						else if (bd[crntY + 1][crntX] == 'o')
 							dist = 0;
-						
+
 						// 빈칸이라면 거리 측정
 						else {
 							// 해당 높이
@@ -173,25 +178,25 @@ public class BOJ_18500_G1_미네랄2 {
 						continue;
 					if (shst > crnt[2]) {
 						shst = crnt[2];
-						destY = crntY;
-						destX = crntX;
 					}
+					bd[crntY][crntX] = '.';
+					bd[crntY + shst][crntX] = 'x';
 				}
 
 				// 검사한 클러스터가 분리되었다면 shst만큼 낙하
 				if (shst == row + 2)
 					continue;
-				
-				
+
 				canBreak = true;
 				// bfs로 모든 노드 탐색하면서 아래로 내려주기
 				// 첫 노드는 이전 bfs 시작 노드와 같음
+				canFall.add(new int[] { height + dydx[breakdown[i % 2][m]][0], destM + dydx[breakdown[i % 2][m]][1] });
 				q.add(new int[] { height + dydx[breakdown[i % 2][m]][0], destM + dydx[breakdown[i % 2][m]][1] });
 				visit = new boolean[row + 2][col + 2];
 				visit[height - 1][destM] = true;
 
-				while (!q.isEmpty()) {
-					crnt = q.poll();
+				while (!canFall.isEmpty()) {
+					crnt = canFall.poll();
 					crntY = crnt[0];
 					crntX = crnt[1];
 
@@ -206,13 +211,19 @@ public class BOJ_18500_G1_미네랄2 {
 						// 다음 x면 위치 변경
 						if (bd[nextY][nextX] == 'x') {
 							visit[nextY][nextX] = true;
+							canFall.add(new int[] { nextY, nextX });
 							q.add(new int[] { nextY, nextX });
 						}
 					}
-					bd[crntY][crntX] = '.';
-					bd[crntY + shst][crntX] = 'x';
 				}
-				//분리된 클러스터는 무조건 1개이기 때문에 처리를 해주면 다른 방향은 검사하지 않고 다음 막대기로 넘어감
+				
+				
+				while (!q.isEmpty()) {
+					crnt = q.poll();
+					bd[crnt[0]][crnt[1]] = '.';
+					bd[crnt[0] + shst][crnt[1]] = 'x';
+				}
+				// 분리된 클러스터는 무조건 1개이기 때문에 처리를 해주면 다른 방향은 검사하지 않고 다음 막대기로 넘어감
 				break;
 			}
 		}
