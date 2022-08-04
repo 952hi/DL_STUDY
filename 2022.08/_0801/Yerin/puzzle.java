@@ -16,7 +16,7 @@ class Solution {
     Block block;
     
     public void turn(Block block){
-        block.start = new int[]{N, N};//ÃÖ´ë·Î ÃÊ±âÈ­
+        block.start = new int[]{N, N};//ìµœëŒ€ë¡œ ì´ˆê¸°í™”
         for(int i=0; i<block.cnt; i++){
             int[] now = block.pos[i];
             int gap = N;
@@ -26,7 +26,7 @@ class Solution {
             else{
                 gap = Math.min(now[1]-0, N-1-now[0]);
             }
-            //ÇÑ ¹ø¿¡ ÀÌµ¿ÇØ¾ß µÇ´Â °Å¸®
+            //í•œ ë²ˆì— ì´ë™í•´ì•¼ ë˜ëŠ” ê±°ë¦¬
             int move = N-1-2*gap, temp=0, min = gap, max = N-1-gap;
             while(move>0){
                 if(now[0]==min && now[1]<max){
@@ -92,25 +92,25 @@ class Solution {
         N = game_board.length;
         List<Block> blanks = new LinkedList<>();
         List<Block> blocks = new LinkedList<>();
-        //1. ºó Ä­ Ã£±â
+        //1. ë¹ˆ ì¹¸ ì°¾ê¸°
         getInfo(blanks, game_board, 0);
         
-        //2. ÆÛÁñ Ã£±â
+        //2. í¼ì¦ ì°¾ê¸°
         getInfo(blocks, table, 1);
         
-        //3. È¸ÀüÇÏ¸é¼­ ¸Â´Â °÷ Ã£±â
+        //3. íšŒì „í•˜ë©´ì„œ ë§ëŠ” ê³³ ì°¾ê¸°
         int size = blanks.size(), k=0, filled = 0;
-        //ºóÄ­ÀÌ ´Ù Ã¡°Å³ª, È¸Àü ´Ù È®ÀÎÇßÀ¸¸é Á¾·á
+        //ë¹ˆì¹¸ì´ ë‹¤ ì°¼ê±°ë‚˜, íšŒì „ ë‹¤ í™•ì¸í–ˆìœ¼ë©´ ì¢…ë£Œ
         while(filled<size){
-            //¿ø·¡ + 3¹ø È¸Àü
+            //ì›ë˜ + 3ë²ˆ íšŒì „
             for(Block blank : blanks){
                 if(blank.done){continue;}
                 for(Block block : blocks){
-                    //ºí·°À» ½è°Å³ª || ºó Ä­ °³¼ö¿Í ´Ù¸£¸é
+                    //ë¸”ëŸ­ì„ ì¼ê±°ë‚˜ || ë¹ˆ ì¹¸ ê°œìˆ˜ì™€ ë‹¤ë¥´ë©´
                     if(block.done || blank.cnt != block.cnt){continue;}
                     int a = (blank.cnt==1)? blank.cnt : 0;
-                    // ÆòÇà ÀÌµ¿ È®ÀÎ
-                    //x°ªÀÌ ÀÛ°í y°ªÀÌ ÀÛÀº °ÍÀÌ ±âÁØ!(¿ŞÂÊ À§ºÎÅÍ Ãâ¹ßÇß±â ¶§¹®)
+                    // í‰í–‰ ì´ë™ í™•ì¸
+                    //xê°’ì´ ì‘ê³  yê°’ì´ ì‘ì€ ê²ƒì´ ê¸°ì¤€!(ì™¼ìª½ ìœ„ë¶€í„° ì¶œë°œí–ˆê¸° ë•Œë¬¸)
                     int dx = block.start[0] - blank.start[0];
                     int dy = block.start[1] - blank.start[1];
                     for(; a<blank.cnt; a++){
@@ -118,12 +118,12 @@ class Solution {
                         int fy = blank.pos[a][1] + dy;
                         int b = 0;
                         for(;b<block.cnt; b++){
-                            //ÆòÇà ÀÌµ¿µÈ ºí·°ÀÌ ÀÖÀ¸¸é
+                            //í‰í–‰ ì´ë™ëœ ë¸”ëŸ­ì´ ìˆìœ¼ë©´
                             if(block.pos[b][0]==fx && block.pos[b][1]==fy){
                                 break;
                             }
                         }
-                        //ÆòÇà ÀÌµ¿ÀÌ ¾Æ´Ï´Ù.
+                        //í‰í–‰ ì´ë™ì´ ì•„ë‹ˆë‹¤.
                         if(b==block.cnt){
                             break;
                         }
@@ -140,8 +140,9 @@ class Solution {
             if(k++>=3){
                 break;
             }
-            //90µµ ½Ã°è ¹æÇâ È¸Àü
+            //90ë„ ì‹œê³„ ë°©í–¥ íšŒì „
             for(Block block : blocks){
+                if(block.done){continue;}
                 turn(block);
             }
         }
