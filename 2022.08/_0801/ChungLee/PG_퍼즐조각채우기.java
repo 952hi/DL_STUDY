@@ -19,7 +19,7 @@ public class PG_퍼즐조각채우기 {
 	static class Solution {
 
 		static int[][] tbPz = new int[625][5];
-		static int tbCnt = 0, gbCnt = 0;
+		static int tbCnt = 0, gbCnt = 0, ans = 0;
 		static int[][] gbPz = new int[625][5];
 		static int[][] Sgame_board;
 		static int[][] Stable;
@@ -27,10 +27,18 @@ public class PG_퍼즐조각채우기 {
 		// 정 비교 좌상 시작
 		static boolean square1(int gbNum, int tbNum) {
 			boolean isSame = true;
-			for (int i = 0; i < tbPz[tbNum][3]; i++) {
-				for (int j = 0; j < tbPz[gbNum][4]; j++) {
-					if (Sgame_board[gbPz[gbNum][0] + i][gbPz[gbNum][1] + j] != Stable[tbPz[tbNum][0] + i][tbPz[tbNum][1]
-							+ j]) {
+
+			int tbstartY = tbPz[tbNum][0];
+			int tbstartX = tbPz[tbNum][1];
+			int gbstartY = gbPz[gbNum][0];
+			int gbstartX = gbPz[gbNum][1];
+			int gbheight = gbPz[gbNum][3];
+			int gbwidth = gbPz[gbNum][4];
+
+			for (int i = 0, row = gbheight + 1; i < row; i++) {
+				for (int j = 0, col = gbwidth + 1; j < col; j++) {
+					if (Sgame_board[gbstartY + i][gbstartX + j] == //
+					Stable[tbstartY + i][tbstartX + j]) {
 						isSame = false;
 						break;
 					}
@@ -42,18 +50,78 @@ public class PG_퍼즐조각채우기 {
 		}
 
 		// 정 비교 우상 시작
-		static boolean square2() {
+		static boolean square2(int gbNum, int tbNum) {
+			boolean isSame = true;
 
+			int tbstartY = tbPz[tbNum][0];
+			int tbstartX = tbPz[tbNum][1];
+			int gbstartY = gbPz[gbNum][0];
+			int gbstartX = gbPz[gbNum][1];
+			int gbheight = gbPz[gbNum][3];
+			int gbwidth = gbPz[gbNum][4];
+
+			for (int i = 0; i < gbheight + 1; i++) {
+				for (int j = 0; j < gbwidth + 1; j++) {
+					if (Sgame_board[gbstartY + i][gbstartX + j] == //
+					Stable[tbstartY + tbPz[tbNum][3] - j][tbstartX + i]) {
+						isSame = false;
+						break;
+					}
+				}
+				if (!isSame)
+					break;
+			}
+			return isSame;
 		}
 
 		// 정 비교 우하 시작
-		static boolean square3() {
+		static boolean square3(int gbNum, int tbNum) {
+			boolean isSame = true;
 
+			int tbstartY = tbPz[tbNum][0];
+			int tbstartX = tbPz[tbNum][1];
+			int gbstartY = gbPz[gbNum][0];
+			int gbstartX = gbPz[gbNum][1];
+			int gbheight = gbPz[gbNum][3];
+			int gbwidth = gbPz[gbNum][4];
+
+			for (int i = 0; i < gbheight + 1; i++) {
+				for (int j = 0; j < gbwidth + 1; j++) {
+					if (Sgame_board[gbstartY + i][gbstartX + j] == //
+					Stable[tbstartY + tbPz[tbNum][3] - i][tbstartX + tbPz[tbNum][4] - j]) {
+						isSame = false;
+						break;
+					}
+				}
+				if (!isSame)
+					break;
+			}
+			return isSame;
 		}
 
 		// 정 비교 좌하 시작
-		static boolean square4() {
+		static boolean square4(int gbNum, int tbNum) {
+			boolean isSame = true;
 
+			int tbstartY = tbPz[tbNum][0];
+			int tbstartX = tbPz[tbNum][1];
+			int gbstartY = gbPz[gbNum][0];
+			int gbstartX = gbPz[gbNum][1];
+			int gbheight = gbPz[gbNum][3];
+			int gbwidth = gbPz[gbNum][4];
+
+			for (int i = 0; i < gbheight + 1; i++) {
+				for (int j = 0; j < gbwidth + 1; j++) {
+					if (Sgame_board[gbstartY + i][gbstartX + j] == //
+					Stable[tbstartY + j][tbstartX + tbPz[tbNum][4] - i]) {
+						isSame = false;
+						break;
+					}
+				}
+				if (!isSame)
+					break;
+			}
+			return isSame;
 		}
 
 		static void dfs() {
@@ -71,17 +139,31 @@ public class PG_퍼즐조각채우기 {
 
 					// 둘 다 길이가 같은 정사각형일 때
 					if (gbPz[i][3] == gbPz[i][4] && gbPz[i][4] == tbPz[j][3] && tbPz[j][3] == tbPz[j][4]) {
-
+						// 4개중 어느 하나라도 맞을 때
+						if (square1(i, j) || square2(i, j) || square3(i, j) || square4(i, j)) {
+							ans += tbPz[j][2];
+							tbPz[j][2] = 0;
+						}
 					}
-					// 세로 길이, 가로 길이가 같은 직사각형
+					// 세로 세로 길이, 가로 가로 길이가 같은 직사각형
 					else if (gbPz[i][3] == tbPz[j][3] && gbPz[i][4] == tbPz[j][4]) {
-
+						if (square1(i, j) || square3(i, j)) {
+							ans += tbPz[j][2];
+							tbPz[j][2] = 0;
+						}
 					}
 					// 세로 가로 같고 가로 세로가 같을 때
 					else if (gbPz[i][3] == tbPz[j][4] && gbPz[i][4] == tbPz[j][3]) {
+						if (square2(i, j) || square4(i, j)) {
+							ans += tbPz[j][2];
+							tbPz[j][2] = 0;
+						}
 
 					}
+					if (tbPz[j][2] == 0)
+						break;
 				}
+
 			}
 		}
 
@@ -91,7 +173,7 @@ public class PG_퍼즐조각채우기 {
 			int[][] dydx = new int[][] { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
 
 			Queue<int[]> q = new LinkedList<>();
-			Queue<int[]> pzq = new LinkedList<>();
+
 			int size = game_board.length, crntY, crntX, nextY, nextX, maxX, maxY, minX, minY, cnt = 0, pzCnt = 0;
 			int[] crnt;
 
@@ -107,11 +189,11 @@ public class PG_퍼즐조각채우기 {
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					// 빈칸이라면 패스
-					if (table[i][j] == 0) {
+					if (table[i][j] == 0 || visit[i][j]) {
 						visit[i][j] = true;
 						continue;
 					}
-					pzCnt = 0;
+					pzCnt = 1;
 					// 빈칸이 아니기 때문에 연결된 조각 검사
 					q.add(new int[] { i, j });
 					visit[i][j] = true;
@@ -151,8 +233,8 @@ public class PG_퍼즐조각채우기 {
 						}
 					}
 					// 테이블의 각 퍼즐 정보 저장
-					tbPz[tbCnt][0] = i;
-					tbPz[tbCnt][1] = j;
+					tbPz[tbCnt][0] = minY;
+					tbPz[tbCnt][1] = minX;
 					tbPz[tbCnt][2] = pzCnt;
 					tbPz[tbCnt][3] = maxY - minY;
 					tbPz[tbCnt][4] = maxX - minX;
@@ -167,12 +249,12 @@ public class PG_퍼즐조각채우기 {
 			for (int i = 0; i < size; i++) {
 				for (int j = 0; j < size; j++) {
 					// 빈칸이라면 패스
-					if (game_board[i][j] == 1) {
+					if (game_board[i][j] == 1 || visit[i][j]) {
 						visit[i][j] = true;
 						continue;
 					}
 
-					pzCnt = 0;
+					pzCnt = 1;
 					// 빈칸이 아니기 때문에 연결된 조각 검사
 					q.add(new int[] { i, j });
 					visit[i][j] = true;
@@ -211,8 +293,8 @@ public class PG_퍼즐조각채우기 {
 							}
 						}
 					}
-					gbPz[gbCnt][0] = i;
-					gbPz[gbCnt][1] = j;
+					gbPz[gbCnt][0] = minY;
+					gbPz[gbCnt][1] = minX;
 					gbPz[gbCnt][2] = pzCnt;
 					gbPz[gbCnt][3] = maxY - minY;
 					gbPz[gbCnt][4] = maxX - minX;
@@ -220,9 +302,8 @@ public class PG_퍼즐조각채우기 {
 				}
 			}
 			// 게임 보드의 빈칸 데이터 조사 완료
-
-			int answer = -1;
-			return emptyGameBoard;
+			dfs();
+			return ans;
 		}
 	}
 
@@ -245,7 +326,10 @@ public class PG_퍼즐조각채우기 {
 				{ 1, 1, 0, 1, 1, 0 }, //
 				{ 0, 1, 0, 0, 0, 0 } };
 
-		s.solution(game_board, table);
-
+//		System.out.println(s.solution(game_board, table));
+		String str1 = new String("abc");
+		String str2 = new String("abc");
+		
+				System.out.println(str1 == str2);
 	}
 }

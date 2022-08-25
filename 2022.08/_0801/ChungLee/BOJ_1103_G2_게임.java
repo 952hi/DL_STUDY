@@ -106,7 +106,8 @@ public class BOJ_1103_G2_게임 {
 		}
 
 		return Math.max(dp[crntY][crntX][0],
-				Math.max(dp[crntY][crntX][1], Math.max(dp[crntY][crntX][2], dp[crntY][crntX][3])));
+				Math.max(dp[crntY][crntX][1], 
+						Math.max(dp[crntY][crntX][2], dp[crntY][crntX][3])));
 
 	}
 
