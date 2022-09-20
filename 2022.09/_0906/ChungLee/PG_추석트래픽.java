@@ -9,6 +9,8 @@ public class PG_추석트래픽 {
 		String[] split, times, size;
 
 		// 데이터 전처리
+		//1초 => 1000으로 변환
+		//
 		for (int i = 0; i < lines.length; i++) {
 			mod = 100;
 			mul = 100;
