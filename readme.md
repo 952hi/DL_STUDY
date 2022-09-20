@@ -1,15 +1,17 @@
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# 9월 13일 발표
+# 9월 13일 발표 => 9월 20일 발표
 1. 등산코스 정하기https://school.programmers.co.kr/learn/courses/30/lessons/118669
 
 2. 합승 택시 요금 https://school.programmers.co.kr/learn/courses/30/lessons/72413
 
+3. 주차 요금 계산 https://school.programmers.co.kr/learn/courses/30/lessons/92341
+
 * 기술블로그에 글 게시후 발표
 
-작성자 PYR
+작성자 PYR 수정자 LC
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 9월 6일 발표
-1. 2018 KAKAO BLIND RECRUITMENT[1차] 추석 트래픽 https://school.programmers.co.kr/learn/courses/30/lessons/17676
+1. 추석 트래픽 https://school.programmers.co.kr/learn/courses/30/lessons/17676
 
 2. 피로도 https://school.programmers.co.kr/learn/courses/30/lessons/87946
 
