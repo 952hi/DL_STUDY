@@ -4,6 +4,8 @@ public class PG_피로도 {
 	static boolean[] isV;
     static int[][] staticD;
     static int Max = 0, dCnt = 0;
+    
+    //
     static public void runD(int crntPiro, int cntV){
         
         for(int i = 0; i < dCnt;i++){

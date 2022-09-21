@@ -11,6 +11,7 @@ public class PG_등산코스정하기 {
 		//각 노드별 최소 값 저장
 		int[] minV = new int[n + 1];
 		boolean[] checkSummits = new boolean[n + 1];
+		
 		for (int i = 0; i < summits.length; i++) {
 			// 정상 노드 위치에 true로 표시
 			checkSummits[summits[i]] = true;
@@ -40,14 +41,12 @@ public class PG_등산코스정하기 {
 		int[] crnt;
 		while (!q.isEmpty()) {
 			crnt = q.poll();
-			// System.out.println("crnt: "+crnt[0]+ " " + crnt[1]);
 			// 정상이라면 종료
 			if (checkSummits[crnt[0]])
 				continue;
 
 			// 방문 가능한 노드를 모두 검사
 			for (int[] i : list[crnt[0]]) {
-				// System.out.println("확인: "+ crnt[0]+ " " + i[0] + " "+i[1]);
 
 				// 한 번도 방문하지 않은 곳은
 				if (minV[i[0]] == 0) {
@@ -55,8 +54,7 @@ public class PG_등산코스정하기 {
 					// 해당 자리에 값 입력
 					minV[i[0]] = Math.max(i[1], crnt[1]);
 					// 해당 자리 방문 예정
-					// System.out.println("0이여서 추가: "+i[0] + " " +i[1]);
-					// 추가가 안된다???
+					
 					q.add(new int[] { i[0], minV[i[0]] });
 					// System.out.println(q.toString());
 
@@ -68,15 +66,11 @@ public class PG_등산코스정하기 {
 						// 최소 값 갱신
 						minV[i[0]] = Math.max(i[1], crnt[1]);
 						// 해당 자리 다시 방문
-						// System.out.println("더작아서 추가: "+i[0] + " " +i[1]);
-
 						q.add(new int[] { i[0], minV[i[0]] });
 					}
 				}
 			}
 		}
-		// System.out.println(Arrays.toString(minV));
-		// System.out.println(Arrays.toString(checkSummits));
 
 		for (int i = 0; i < summits.length; i++) {
 			// System.out.println(minV[summits[i]]);

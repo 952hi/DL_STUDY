@@ -8,9 +8,9 @@ public class PG_추석트래픽 {
 		int max = 1, cnt = 1, tmp = 0, mod = 100, mul = 100;
 		String[] split, times, size;
 
-		// 데이터 전처리
-		//1초 => 1000으로 변환
-		//
+		// **********************
+		// 데이터 전처리 시작
+		// 1초 => 1000으로 변환
 		for (int i = 0; i < lines.length; i++) {
 			mod = 100;
 			mul = 100;
@@ -39,6 +39,7 @@ public class PG_추석트래픽 {
 				if (size[1].length() >= 4)
 					data[i][0] -= size[1].charAt(2) - '0';
 			}
+
 			// 시, 분 추가
 			data[i][1] += Integer.parseInt(times[0]) * 3600 + Integer.parseInt(times[1]) * 60;
 			// 밀리조 분리
@@ -51,13 +52,20 @@ public class PG_추석트래픽 {
 			data[i][1] += Integer.parseInt(times[1]);
 			data[i][0] += data[i][1] + 1;
 		}
-
+		// 데이터 전처리 끝
+		// **********************
+		
+		
 		// 체크
-		// 0부터 n-1까지
+		// 0부터 N-1까지를 기준
+		// 1부터 N까지 기준값과 비교
+		// 1. 비교 데이터의 끝 값이 기준 값의 시작 값보다 작거나 같고 두 값의 간격이 999이하라면 겹치는 것
+		// 2. 혹은 기준 데이터의 끝값에서 비교데이터의 시작 값 차이가 999ms 이하라도 가능
 		for (int i = 0; i < lines.length - 1; i++) {
 			cnt = 1;
 			// i+1부터 n까지
 			for (int j = i + 1; j < lines.length; j++) {
+				
 				if (data[i][1] <= data[j][0] && data[j][0] - data[i][1] <= 999) {
 					cnt++;
 				} else if (data[i][1] + 999 >= data[j][0]) {
@@ -66,7 +74,6 @@ public class PG_추석트래픽 {
 			}
 			max = Math.max(max, cnt);
 		}
-
 		return max;
 	}
 }

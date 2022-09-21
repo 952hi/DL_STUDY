@@ -59,7 +59,6 @@ class Solution {
 		int a = 0;
 		// 가장 작은 주차번호 순회
 		for (String i : list) {
-			System.out.print("차번호: " + i);
 			value = 0;
 			// 작은 순서대로 주차 비용 저장
 			// 출차되지 않았을 때
