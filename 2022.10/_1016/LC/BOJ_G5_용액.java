@@ -11,17 +11,18 @@ public class BOJ_G5_용액 {
 		int N = Integer.parseInt(br.readLine());
 		int arr[] = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		// 값 입력
 		for (int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		int left = 0, right = N - 1, mid, minSum = Integer.MAX_VALUE, ansL = 0, ansR = 0;
-
+		
+		int left = 0, right = N - 1, minSum = Integer.MAX_VALUE, ansL = 0, ansR = 0;
+		//같은 용액을 사용할 수 없기 때문에 < 사용
 		while (left < right) {
-			mid = (left + right) / 2;
-
 			if(arr[left] + arr[right] == 0) {
-				System.out.println(arr[left] + " " + arr[right]);
-				return;
+				ansL = arr[left];
+				ansR = arr[right];
+				break;
 			}
 			if(Math.abs(arr[left] + arr[right]) < minSum) {
 				minSum = Math.abs(arr[left] + arr[right]);
