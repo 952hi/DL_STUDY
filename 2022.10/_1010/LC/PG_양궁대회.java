@@ -1,4 +1,4 @@
-package LC;
+package _1010.LC;
 
 import java.util.*;
 
