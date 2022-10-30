@@ -1,7 +1,9 @@
+package _1023.LC;
+
 import java.io.*;
 import java.util.*;
 
-class Main {
+class BOJ_G3_모자이크 {
 	static class reader {
 		int bufferSize = 1 << 18;
 		byte[] buffer = new byte[bufferSize];
@@ -36,6 +38,8 @@ class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
+//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//		StringTokenizer st = new StringTokenizer(br.readLine());
 		reader br = new reader();
 		int y = br.nextInt();
 		int x = br.nextInt();
@@ -56,9 +60,11 @@ class Main {
 		}
 		// left: 최소 종이는 틀린 모자이크 중 최대Y, right: 최대 높이, 최대 X 중 더 큰 것
 		// 겹칠 수 있기 때문에 전체 불량 모자이크를 덮을 수 있는 사각형이라면 그냥 한 자리에서 중복 겹치기
+		// 하지만 조금씩만 겹칠 수 있다면
 		int cnt, answer = Integer.MAX_VALUE, left = Math.min(maxHeight, wrongX), right = Math.max(maxHeight, wrongX),
 				mid = 0;
 
+		// 특정
 		while (left <= right) {
 			cnt = 0;
 			mid = (left + right) / 2;
